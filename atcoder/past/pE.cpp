@@ -40,44 +40,43 @@ using namespace std;
 //koyingOrz
 //foxyyOrz
 //peiganOrz
-
+//jikuaiOrz
+int follow[501][501]={};
 int main(){
-	int n;cin>>n;
-	int arr[n+1],brr[n+1],minb=1e9,minc=1e9,b=0,c=0;
-	for(int i=1;i<=n;i++){
-		cin>>arr[i];
-		if(i%2==1)minb=min(minb,arr[i]);
-		minc=min(minc,arr[i]);
-		brr[i]=0;
-	}
-	int q;cin>>q;
+	int n,q;cin>>n>>q;
+	int type;
 	while(q--){
-		int ty;cin>>ty;
-		cout<<minb<<" "<<minc<<endl<<endl;
-		if(ty==1){
-			int x,a;cin>>x>>a;
-			brr[x]+=a;
-			if(x%2==1){
-				minb=min(minb,max(arr[x]-brr[x]-b-c,0));
+		cin>>type;
+		if(type==1){
+			int a,b;cin>>a>>b;
+			follow[a][b]=1;
+		}else if(type==2){
+			int a;cin>>a;
+			for(int i=1;i<=n;i++){
+				if(follow[i][a]==1)follow[a][i]=1;
 			}
-			minc=min(minc,max(arr[x]-brr[x]-c,0));
-		}else if(ty==2){
-			int a;cin>>a;
-			if(minb>=a)b+=a,minb=minb-a;
-		}else {
-			int a;cin>>a;
-			if(minc>=a)c+=a,minc=minc-a;
+		}else{
+			int a;cin>>a;		
+			queue<pii> que;
+			for(int i=1;i<=n;i++){
+				if(follow[a][i]){
+					for(int j=1;j<=n;j++){
+						if(follow[i][j]==1&&a!=j)que.push(mp(a,j));
+					}
+				}
+			}
+			while(que.size()){
+				follow[que.front().F][que.front().S]=1;
+				que.pop();
+			}
 		}
 	}
-	ll ans=0;
 	for(int i=1;i<=n;i++){
-		cout<<ans<<endl;
-		if(i%2==1){
-			ans+=min(arr[i],brr[i]+b+c);
-		}else {
-			ans+=min(arr[i],brr[i]+c);
-		}
+		for(int j=1;j<=n;j++){
+			if(follow[i][j]==1)cout<<'Y';
+			else cout<<'N';
+		}cout<<endl;
 	}
-	cout<<ans<<endl;
+	
 	return 0 ;
 } 

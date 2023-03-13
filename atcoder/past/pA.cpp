@@ -40,44 +40,17 @@ using namespace std;
 //koyingOrz
 //foxyyOrz
 //peiganOrz
+//jikuaiOrz
 
 int main(){
-	int n;cin>>n;
-	int arr[n+1],brr[n+1],minb=1e9,minc=1e9,b=0,c=0;
-	for(int i=1;i<=n;i++){
-		cin>>arr[i];
-		if(i%2==1)minb=min(minb,arr[i]);
-		minc=min(minc,arr[i]);
-		brr[i]=0;
+	int flag=0,ans=0;
+	for(int i=0;i<3;i++){
+		char c;cin>>c;
+		if(c>='0'&&c<='9')ans=ans*10+c-'0';
+		else flag=1;
 	}
-	int q;cin>>q;
-	while(q--){
-		int ty;cin>>ty;
-		cout<<minb<<" "<<minc<<endl<<endl;
-		if(ty==1){
-			int x,a;cin>>x>>a;
-			brr[x]+=a;
-			if(x%2==1){
-				minb=min(minb,max(arr[x]-brr[x]-b-c,0));
-			}
-			minc=min(minc,max(arr[x]-brr[x]-c,0));
-		}else if(ty==2){
-			int a;cin>>a;
-			if(minb>=a)b+=a,minb=minb-a;
-		}else {
-			int a;cin>>a;
-			if(minc>=a)c+=a,minc=minc-a;
-		}
-	}
-	ll ans=0;
-	for(int i=1;i<=n;i++){
-		cout<<ans<<endl;
-		if(i%2==1){
-			ans+=min(arr[i],brr[i]+b+c);
-		}else {
-			ans+=min(arr[i],brr[i]+c);
-		}
-	}
-	cout<<ans<<endl;
+	if(flag){
+		cout<<"error\n";
+	}else cout<<ans*2;
 	return 0 ;
 } 
