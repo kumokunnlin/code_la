@@ -40,14 +40,54 @@ using namespace std;
 //koyingOrz
 //foxyyOrz
 //peiganOrz
-
+int spa[150001][19]={},deg[150001]={};
+vector<int> gra[150001];
+void dfs(int v,int pre){
+	for(auto i:gra[v]){
+		if(i!=pre){
+			deg[i]=deg[v]+1;
+			dfs(i,v);
+		}
+	}
+}
+int lca(int a,int b){
+	if(deg[a]<deg[b])swap(a,b);
+	int gap=deg[a]-deg[b];
+	for(int i=0;i<=18;i++){
+		
+		if(((1<<i)&gap)!=0)a=spa[a][i];
+	}
+	if(a==b)return a;
+	for(int i=18;i>=0;i--){
+		if(spa[a][i]!=spa[b][i]){
+			a=spa[a][i];
+			b=spa[b][i];
+		}
+	}
+	return spa[a][0];
+}
 int main(){
 	int n;cin>>n;
-	long double ans=0,tmp=6*n;
-	for(int i=1;i<=n*6;i++){
-		for(int j=1;j<=i;j++)ans+=(long double)j*(i-j+1)/tmp,tmp*=6*n;
-		tmp=6*n; 
+	int root;
+	for(int i=1;i<=n;i++){
+		int a;cin>>a;
+		spa[i][0]=a;
+		if(a!=-1)gra[i].pb(a),gra[a].pb(i);
+		else root=i,spa[i][0]=i;
 	}
-	cout<<ans<<endl;
+	deg[root]=0;
+	dfs(root,-1);
+	for(int i=1;i<=18;i++){
+		for(int j=1;j<=n;j++){
+			spa[j][i]=spa[spa[j][i-1]][i-1];
+		}
+	}
+	int q;cin>>q;
+	while(q--){
+		int a,b;cin>>a>>b;
+		if(lca(a,b)==b)cout<<"Yes\n";
+		else cout<<"No\n";
+	}
+	
 	return 0 ;
 } 

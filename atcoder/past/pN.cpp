@@ -42,11 +42,21 @@ using namespace std;
 //peiganOrz
 
 int main(){
-	int n;cin>>n;
-	long double ans=0,tmp=6*n;
-	for(int i=1;i<=n*6;i++){
-		for(int j=1;j<=i;j++)ans+=(long double)j*(i-j+1)/tmp,tmp*=6*n;
-		tmp=6*n; 
+	int n,w,c;cin>>n>>w>>c;
+	pair<int,pair<int,ll>> arr[n+1];
+	for(int i=0;i<n;i++)cin>>arr[i].F>>arr[i].S.F>>arr[i].S.S;
+	arr[n]=mp(w,mp(w,0));
+	sort(arr,arr+n);
+	priority_queue<pair<int,ll>,vector<pair<int,ll>>,greater<pair<int,ll>>> pq;
+	ll ans=1e18,sum=0;
+	for(int i=0;i<=n;i++){
+		while(pq.size()&&pq.top().F<=arr[i].F-c)sum-=pq.top().S,pq.pop();
+		if(arr[i].F>=c)ans=min(ans,sum);
+		while(i<n&&arr[i].F==arr[i+1].F){
+			pq.push(arr[i].S);sum+=arr[i].S.S;
+			i++;
+		}
+		pq.push(arr[i].S);sum+=arr[i].S.S;
 	}
 	cout<<ans<<endl;
 	return 0 ;

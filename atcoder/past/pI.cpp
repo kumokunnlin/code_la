@@ -42,12 +42,25 @@ using namespace std;
 //peiganOrz
 
 int main(){
-	int n;cin>>n;
-	long double ans=0,tmp=6*n;
-	for(int i=1;i<=n*6;i++){
-		for(int j=1;j<=i;j++)ans+=(long double)j*(i-j+1)/tmp,tmp*=6*n;
-		tmp=6*n; 
+	int n,m;cin>>n>>m;
+	pair<int,ll> brr[m];
+	ll dp[(1<<n)];
+	for(int i=0;i<(1<<n);i++)dp[i]=1e18;
+	for(int i=0;i<m;i++){
+		string s;ll tmp;cin>>s>>tmp;
+		brr[i].F=0;brr[i].S=tmp;
+		for(int j=0;j<n;j++){
+			brr[i].F*=2;
+			if(s[j]=='Y')brr[i].F++;
+		}
 	}
-	cout<<ans<<endl;
+	dp[0]=0;
+	for(int i=0;i<m;i++){
+		for(int j=(1<<n)-1;j>=0;j--){
+			dp[(j|brr[i].F)]=min(dp[(j|brr[i].F)],dp[j]+brr[i].S);
+		}
+	}
+	if(dp[(1<<n)-1]!=1e18)cout<<dp[(1<<n)-1]<<endl;
+	else cout<<-1<<endl;
 	return 0 ;
 } 

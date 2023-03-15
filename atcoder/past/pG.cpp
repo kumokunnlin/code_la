@@ -43,11 +43,33 @@ using namespace std;
 
 int main(){
 	int n;cin>>n;
-	long double ans=0,tmp=6*n;
-	for(int i=1;i<=n*6;i++){
-		for(int j=1;j<=i;j++)ans+=(long double)j*(i-j+1)/tmp,tmp*=6*n;
-		tmp=6*n; 
+	int arr[n+1][n+1];
+	for(int i=1;i<=n;i++){
+		for(int j=i+1;j<=n;j++)cin>>arr[i][j],arr[j][i]=arr[i][j];
 	}
-	cout<<ans<<endl;
+	int ma=(1<<n);
+	ll ans=-1e18;
+	for(int i=0;i<ma;i++){
+		for(int j=0;j<ma;j++){
+			vector<int> a,b,c;
+			if(i&j!=0)continue;
+			for(int k=0;k<n;k++){
+				if((1<<k)&i)a.pb(k+1);
+				else if((1<<k)&j)b.pb(k+1);
+				else c.pb(k+1);
+			}
+			ll sum=0;
+			for(int k=0;k<a.size();k++){
+				for(int l=k+1;l<a.size();l++)sum+=arr[a[k]][a[l]];
+			}
+			for(int k=0;k<b.size();k++){
+				for(int l=k+1;l<b.size();l++)sum+=arr[b[k]][b[l]];
+			}
+			for(int k=0;k<c.size();k++){
+				for(int l=k+1;l<c.size();l++)sum+=arr[c[k]][c[l]];
+			}
+			ans=max(ans,sum);
+		}
+	}cout<<ans<<endl;
 	return 0 ;
 } 
